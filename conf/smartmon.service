@@ -22,12 +22,14 @@ After=wpeframework.service
 Requires=wpeframework.service
 
 [Service]
+Type=notify
+NotifyAccess=all
 
 Environment=SMCONFIG=/etc/smartmon.conf
 #if this variable is present, debug is enabled
 Environment=SMDEBUG=0
 ExecStart=/usr/bin/smartmon
-RestartSec=5
+RestartSec=15
 Restart=always
 
 [Install]
