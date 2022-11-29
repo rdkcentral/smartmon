@@ -131,7 +131,6 @@ void SmartMonitor::registerForEvents()
                                    { memoryStatusUpdated(isPressured, memType, memValue); });
 }
 
-
 void SmartMonitor::onLaunched(const std::string client, const std::string &launchType)
 {
     LOGTRACE("%s launched as %s", client.c_str(), launchType.c_str());
@@ -186,20 +185,25 @@ void SmartMonitor::handleLowMemory(MemoryEvent memType, int memValue)
     vector<std::string> apps = tiface->getActiveApplications();
     LOGINFO("Active app count %d ", apps.size());
 
+
     for (auto &app : apps)
     {
+        bool found = false;
         // Try unloading all apps that are not critical.
         for (auto &callsign : config->criticalapps)
         {
-
-            LOGINFO("Checking %s against %s", app.c_str(), callsign.c_str());
-
-            // Not the active application and part of our list of apps that can be offloaded
-            if (!stringCompareIgnoreCase(app, callsign) && !stringCompareIgnoreCase(app, m_activeApp))
+            if (stringCompareIgnoreCase(app, callsign))
             {
-                LOGINFO(" Offloading %s", callsign.c_str());
-                tiface->offloadApplication(callsign);
+                found = true;
+                break;
             }
+        }
+
+        // Not the active application and not a critical app
+        if (!found && !stringCompareIgnoreCase(app,m_activeApp))
+        {
+            LOGINFO(" Offloading %s", app.c_str());
+            tiface->offloadApplication(app);
         }
     }
 }
