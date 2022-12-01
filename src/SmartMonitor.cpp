@@ -203,7 +203,11 @@ void SmartMonitor::handleLowMemory(MemoryEvent memType, int memValue)
         if (!found && !stringCompareIgnoreCase(app,m_activeApp))
         {
             LOGINFO(" Offloading %s", app.c_str());
-            tiface->offloadApplication(app);
+            std::string csign = config->callsignMap[app];
+            if(!csign.empty())
+                tiface->offloadApplication(csign);
+            else
+                LOGINFO(" Failed to find call sign %s", app.c_str());
         }
     }
 }

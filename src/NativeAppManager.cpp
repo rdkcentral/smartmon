@@ -24,7 +24,7 @@
 #include "SmartMonitor.h"
 #include "EventUtils.h"
 
-static const char *VERSION = "0.1.0";
+static const char *VERSION = "0.1.1";
 
 int main(int argc, char *argv[])
 {

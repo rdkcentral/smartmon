@@ -36,11 +36,19 @@ struct MonitorConfig
     int lowmem;
     int buzzmem;
     std::string wsurl;
+    std::map<std::string,std::string> callsignMap;
     std::vector<std::string> criticalapps;
 };
 
 struct ConfigReader
 {
+#include <algorithm>
+#include <cctype>
+    static void  lowercase(std::string &str){
+        std::transform(str.begin(),str.end(),str.begin(),[](unsigned char x){
+            return std::tolower(x);
+        });
+    }
     static MonitorConfig *readConfiguration()
     {
         Json::Value root;
@@ -73,6 +81,21 @@ struct ConfigReader
         monconf->homekey = root["homekey"].asInt();
         monconf->lowmem = root["lowmem"].asInt();
         monconf->buzzmem = root["criticalmem"].asInt();
+        //This is required becase of an error in RDKShell which returns all
+        //callsigns in lowercase.
+        if(!root["callsigns"].empty())
+        {
+             Json::ArrayIndex size = root["callsigns"].size();
+            for (int x = 0; x < size; x++)
+            {
+                std::string  callsign = root["callsigns"][x].asString();
+                std::string lcallsign = callsign;
+                lowercase(lcallsign);
+
+                monconf->callsignMap[lcallsign]= callsign;
+            }
+        }
+
 
         if(!root["criticalapps"].empty())
         {
@@ -92,6 +115,12 @@ struct ConfigReader
         monconf->homekey = 36;
         monconf->lowmem = 120;
         monconf->buzzmem = 60;
+        monconf->callsignMap["lightningapp"]="LightningApp";
+        monconf->callsignMap["htmlapp"]="HtmlApp";
+        monconf->callsignMap["amazon"]="Amazon";
+        monconf->callsignMap["cobalt"]="Cobalt";
+        monconf->callsignMap["netflix"]="Netflix";
+
         return monconf;        
     }
 };
