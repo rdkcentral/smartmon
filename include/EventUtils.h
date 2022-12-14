@@ -58,23 +58,7 @@ inline bool stringCompareIgnoreCase(const std::string &a, const std::string &b)
         return strncasecmp(a.c_str(), b.c_str(), a.length()) == 0;
     return false;
 }
-inline std::string upperCase(std::string &s)
-{
-
-    std::transform(s.begin(), s.end(), s.begin(),
-                   [](unsigned char c)
-                   { return std::toupper(c); });
-    return s;
-}
-inline std::string lowerCase(std::string &s)
-{
-
-    std::transform(s.begin(), s.end(), s.begin(),
-                   [](unsigned char c)
-                   { return std::tolower(c); });
-    return s;
-}
- extern bool debug;
+extern bool debug;
 bool isDebugEnabled();
 
 bool getMessageId(const string &jsonMsg, int &msgId);
