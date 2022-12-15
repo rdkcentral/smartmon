@@ -1,5 +1,5 @@
 /*
- * If not stated otherwise in this file or this component's Licenses.txt file the
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2022 RDK Management
@@ -178,10 +178,6 @@ void SmartMonitor::handleLowMemory(MemoryEvent memType, int memValue)
             return;
         }
     }
-    // So either critical event/ residentapp is the active app/ residentApp already offloaded
-    //. We need to offload some apps that are permitted.
-    // Find app with lowest weight and offload it.
-    // TODO TINYRDKV-145
     vector<std::string> apps = tiface->getActiveApplications();
     LOGINFO("Active app count %d ", apps.size());
 

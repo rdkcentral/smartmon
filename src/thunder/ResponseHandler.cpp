@@ -1,5 +1,5 @@
 /*
- * If not stated otherwise in this file or this component's Licenses.txt file the
+ * If not stated otherwise in this file or this component's LICENSE file the
  * following copyright and licenses apply:
  *
  * Copyright 2022 RDK Management
@@ -223,5 +223,5 @@ void ResponseHandler::addMessageToEventQueue(const string msg)
 }
 void ResponseHandler::connectionEvent(bool connected)
 {
-    //TODO
+    //This needs to be revisited.
 }
